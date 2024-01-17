@@ -27,11 +27,11 @@ def accept(request):
 
     return render(request, 'pdf/accept.html')
 
-def resume(request, id): # id will be id of user to download their cv
-    user_profile = Profile.objects.get(pk=id) # getting user profile from database via id
+def resume(request, id): 
+    user_profile = Profile.objects.get(pk=id) 
 
-    template = loader.get_template('pdf/resume.html') # loads template without context i.e. without user data
-    html = template.render({'user_profile': user_profile}) # passes in context
+    template = loader.get_template('pdf/resume.html')
+    html = template.render({'user_profile': user_profile}) 
 
     path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
@@ -41,10 +41,10 @@ def resume(request, id): # id will be id of user to download their cv
         'encoding': 'UTF-8',
     }
 
-    pdf = pdfkit.from_string(html, False, options, configuration=config) # takes a html string and converts to pdf document, format = from_string(input, output_path, options=None, toc=None, cover=None, css=None, configuration=None, cover_first=False, input_encoding=None, **kwargs) 
+    pdf = pdfkit.from_string(html, False, options, configuration=config) 
 
-    response = HttpResponse(pdf,content_type="application/pdf") # pdf file, content_type states it's a pdf file
-    response['Content-Disposition'] = f"attachment; filename=resume.pdf" # treating the file as an attachment rather than displaying in the browser
+    response = HttpResponse(pdf,content_type="application/pdf") 
+    response['Content-Disposition'] = f"attachment; filename=resume.pdf" 
     filename = "resume.pdf"
 
     return response
